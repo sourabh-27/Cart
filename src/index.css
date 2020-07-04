@@ -14,15 +14,15 @@ body {
 .cart-item .right-block{
   padding: 0px 20px;
 }
-.cart-item-action{
+.cart-item-actions{
   margin-top: 20px;
 }
-.action-items{
+.action-icons{
   height: 25px;
   width: 25px;
   margin-right: 10px;
 }
-.action-icons hover{
+.action-icons:hover{
   cursor: pointer;
 }
 
