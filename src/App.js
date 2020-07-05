@@ -9,23 +9,23 @@ class App extends React.Component {
           products: [
               {
                   price: 10000,
-                  title: 'Phone',
+                  title: 'Telephone',
                   qty: 10,
-                  img: '',
+                  img: 'https://images.unsplash.com/photo-1557180295-76eee20ae8aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
                   id: 1 
               },
               {
                   price: 60000,
                   title: 'Laptop',
                   qty: 4,
-                  img: '',
+                  img: 'https://images.unsplash.com/photo-1593642533144-3d62aa4783ec?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
                   id: 2
               },
               {
                   price: 999,
                   title: 'Calculator',
                   qty: 2,
-                  img: '',
+                  img: 'https://images.unsplash.com/photo-1587145820266-a5951ee6f620?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
                   id: 3
               }
           ]
@@ -72,6 +72,15 @@ class App extends React.Component {
     console.log("The count is2:", count);
     return count;
   }
+
+  getCartTotal = () => {
+    const {products} = this.state;
+    let cartTotal = 0;
+    products.map((product) => {
+      cartTotal += (product.qty * product.price);
+    });
+    return cartTotal;
+  }
   render() {
     const {products} = this.state;
     return (
@@ -83,6 +92,7 @@ class App extends React.Component {
           onDeleteProduct={this.handleDeleteProduct}
           products={products}
         />
+        <div style={{fontSize: 25, padding: 10}}>TOTAL: {this.getCartTotal()} </div>
       </div>
     );
   }
