@@ -1,42 +1,6 @@
 import React from 'react';
 
 class CartItem extends React.Component{
-    constructor(){
-        super();
-        this.state = {
-            price: 999,
-            title: 'Phone',
-            qty: 1,
-            img: ''
-        }
-    }
-
-    increaseQuantity = () =>{
-        console.log(this.state);
-        //setState form 1 using object
-        // this.setState({
-        //     qty: this.state.qty + 1
-        // }, () => {});
-
-        //setState form 2 => function and callback : do this when prevState is required
-        this.setState((prevState) => {
-            return {
-                qty: prevState.qty + 1
-            }
-        });
-    }
-
-    decreaseQuantity = () => {
-        const {qty} = this.state;
-        if(qty === 0){
-            return
-        }
-        this.setState((prevState) => {
-            return {
-                qty: prevState.qty - 1
-            }
-        })
-    }
     render(){
         const {price, title, qty} = this.props.product;
         return(
@@ -55,18 +19,19 @@ class CartItem extends React.Component{
                             alt="Increase" 
                             className="action-icons" 
                             src="https://image.flaticon.com/icons/svg/992/992651.svg"
-                            onClick={this.increaseQuantity}
+                            onClick={() => this.props.onIncreaseQuantity(this.props.product)}
                         />
                         <img
                             alt="Decrease" 
                             className="action-icons" 
                             src="https://image.flaticon.com/icons/svg/992/992683.svg"
-                            onClick={this.decreaseQuantity}
+                            onClick={() => this.props.onDecreaseQuantity(this.props.product)}
                         />
                         <img 
                             alt="Delete" 
                             className="action-icons" 
                             src="https://image.flaticon.com/icons/svg/1345/1345823.svg"
+                            onClick={() => this.props.onIncreaseQuantity(this.props.product)}
                         />
                     </div>
                 </div>
