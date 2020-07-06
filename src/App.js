@@ -38,6 +38,8 @@ class App extends React.Component {
 
     this.db
       .collection('products')
+      // .where('price', '<', 999)
+      .orderBy('price', 'asc')
       .onSnapshot((snapshot) => {
         console.log('snapshot', snapshot);
         snapshot.docs.map((doc) => {
@@ -106,10 +108,17 @@ class App extends React.Component {
   handleDeleteProduct = (id) => {
     const {products} = this.state;
     const items = products.filter((item) => item.id !== id); //products whose id is not equal to id passed
+    const docRef = this.db.collection('products').doc(id);
     
-    this.setState({
-        products: items
-    });
+    // this.setState({
+    //     products: items
+    // });
+
+    docRef
+      .delete()
+      .then(() => {
+        console.log('Deleted successfully');
+      })
   }
 
   getCartCount = () => {
