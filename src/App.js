@@ -10,6 +10,7 @@ class App extends React.Component {
           products: [], 
           loading: true
       }
+      this.db = firebase.firestore();
   }
   componentDidMount (){
     // firebase
@@ -35,8 +36,7 @@ class App extends React.Component {
     //     })
     //   })
 
-    firebase
-      .firestore()
+    this.db
       .collection('products')
       .onSnapshot((snapshot) => {
         console.log('snapshot', snapshot);
@@ -61,11 +61,24 @@ class App extends React.Component {
       console.log('Hey, increasing the qty of the producty', product);
       const {products} = this.state;
       const index = products.indexOf(product);
-      products[index].qty += 1;
 
-      this.setState({
-          products
-      });
+      // products[index].qty += 1;
+
+      // this.setState({
+      //     products
+      // });
+      const docRef = this.db.collection('products').doc(products[index].id); 
+      docRef
+        .update({
+          qty: products[index].qty + 1
+        })
+        .then(() => {
+          console.log('Updated successfully');
+        })
+        .catch((err) => {
+          console.log('Error in updating db: ', err);
+        })
+
   }
   handleDecreaseQuantity = (product) => {
       console.log('Hey, decreasing the qty of the product', product);
@@ -74,10 +87,21 @@ class App extends React.Component {
       if(products[index].qty === 0){
           return;
       }
-      products[index].qty -= 1
-      this.setState({
-          products
-      });
+      // products[index].qty -= 1
+      // this.setState({
+      //     products
+      // });
+      const docRef = this.db.collection('products').doc(products[index].id);
+      docRef
+        .update({
+          qty: products[index].qty - 1
+        })
+        .then(() => {
+          console.log('Decreased Successfully');
+        })
+        .catch((err) => {
+          console.log('Error in decreasing quantity:', err);
+        })
   }
   handleDeleteProduct = (id) => {
     const {products} = this.state;
@@ -108,11 +132,28 @@ class App extends React.Component {
     });
     return cartTotal;
   }
+  // addProduct = () => {
+  //   this.db
+  //     .collection('products')
+  //     .add({
+  //       img: 'https://images.unsplash.com/photo-1551761429-8232f9f5955c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=909&q=80',
+  //       price: 900,
+  //       qty: 6,
+  //       title: 'Washing Machine'
+  //     })
+  //     .then((docRef) => {
+  //       console.log('Product has been added', docRef);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Error has occured in adding product:", err);
+  //     })
+  // }
   render() {
     const { products, loading } = this.state;
     return (
       <div className="App">
         <Navbar count={this.getCartCount()}/>
+        {/* <button onClick={this.addProduct} style={{ fontSize: 25, padding: 20 }}>Add a product</button> */}
         <Cart 
           onIncreaseQuantity={this.handleIncreaseQuantity}
           onDecreaseQuantity={this.handleDecreaseQuantity}
